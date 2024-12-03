@@ -54,5 +54,14 @@ func runLengthEncode(data *[]byte) error {
 }
 
 func huffmanEncode(data *[]byte) error {
+
+	// Build frequency map
+
+	// Build huffman tree using freq map
+
+	// Create huffman codes by traversing tree
+
+	// Encode input
+
 	return data, nil
 }
