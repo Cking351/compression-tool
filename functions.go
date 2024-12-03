@@ -55,13 +55,38 @@ func runLengthEncode(data *[]byte) error {
 
 func huffmanEncode(data *[]byte) error {
 
-	// Build frequency map
+	// Create frequency map
+	freqMap := make(map[byte]int)
+	var heapNodes []*HuffmanNode
 
-	// Build huffman tree using freq map
+	// Count and add to map
+	for _, curByte := range *data {
+		if _, ok := freqMap[curByte]; !ok {
+			freqMap[curByte] = 1
+		} else {
+			freqMap[curByte] += 1
+		}
+	}
 
-	// Create huffman codes by traversing tree
+	// Create leaf nodes
+	for uByte, freq := range freqMap {
+		node := &HuffmanNode{
+			char:      uByte,
+			frequency: freq,
+			left:      nil,
+			right:     nil,
+		}
+	}
 
 	// Encode input
 
-	return data, nil
+	return nil
+}
+
+func writeToFile(filename string, data []byte) error {
+	err := os.WriteFile(filename, data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }
