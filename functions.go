@@ -15,7 +15,6 @@ func readFile(file *os.File) ([]byte, error) {
 }
 
 func compress(data []byte, encodingType string) ([]byte, error) {
-
 	switch encodingType {
 	case "RLE":
 		err := runLengthEncode(&data)
@@ -27,8 +26,17 @@ func compress(data []byte, encodingType string) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
+	case "RLE+huffman":
+		err := runLengthEncode(&data)
+		if err != nil {
+			return nil, err
+		}
+		err = huffmanEncode(&data)
+		if err != nil {
+			return nil, err
+		}
 	default:
-		return nil, fmt.Errorf("Unsupported encoding type: %s", encodingType)
+		return nil, fmt.Errorf("unsupported encoding type: %s", encodingType)
 	}
 	return data, nil
 }
@@ -51,8 +59,4 @@ func runLengthEncode(data *[]byte) error {
 	encoded = append(encoded, (*data)[len(*data)-1], byte(count))
 	*data = encoded
 	return nil
-}
-
-func huffmanEncode(data *[]byte) error {
-	return data, nil
 }
